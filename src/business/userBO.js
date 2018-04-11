@@ -12,13 +12,27 @@ module.exports = function(dependencies) {
     dependencies: dependencies,
 
     clear: function() {
-      return userDAO.clear();
+      return new Promise(function(resolve, reject) {
+        var chain = Promise.resolve();
+
+        chain
+          .then(function() {
+            logger.info('[UserBO] Clearing the collection from database');
+            return userDAO.clear();
+          })
+          .then(function() {
+            logger.info('[UserBO] All items has been removed successfully from data base');
+            return true;
+          })
+          .then(resolve)
+          .catch(reject);
+      });
     },
 
     getAll: function(filter, allFields) {
       return new Promise(function(resolve, reject) {
         filter.isEnabled = true;
-        logger.info('Listing all users by filter ', filter);
+        logger.info('[UserBO] Listing all items by filter ', filter);
         userDAO.getAll(filter, allFields)
           .then(function(r) {
             resolve(r.map(function(item) {
@@ -36,10 +50,10 @@ module.exports = function(dependencies) {
         self.getByEmail(entity.email)
           .then(function(user) {
             if (!user) {
-              logger.debug('Saving the new user. Entity: ', JSON.stringify(entity));
+              logger.debug('[UserBO] Saving the new user. Entity: ', JSON.stringify(entity));
               var o = modelParser.prepare(entity, true);
               o.password = md5(entity.password);
-              logger.debug('Entity  after prepare: ', JSON.stringify(o));
+              logger.debug('[UserBO] Entity  after prepare: ', JSON.stringify(o));
               return userDAO.save(o);
             } else {
               throw {
@@ -63,14 +77,14 @@ module.exports = function(dependencies) {
         // generating a random number for confirmation key and internal key
         var randomConfirmationKey =  'KEY' + (new Date().getTime() * Math.random());
         var randomInternalKey =  'KEY' + (new Date().getTime() * Math.random());
-        logger.debug('Generating random numbers to create confirmation key and internal key',
+        logger.debug('[UserBO] Generating random numbers to create confirmation key and internal key',
                      randomConfirmationKey,
                      randomInternalKey);
 
         self.getByEmail(entity.email)
           .then(function(user) {
             if (!user) {
-              logger.debug('Saving the new user. Entity: ', JSON.stringify(entity));
+              logger.debug('[UserBO] Saving the new user. Entity: ', JSON.stringify(entity));
               var o = modelParser.prepare(entity, true);
               if (o.password) {
                 o.password = md5(entity.password);
@@ -83,7 +97,7 @@ module.exports = function(dependencies) {
               };
               o.internalKey = md5(randomInternalKey + confirmationKey);
 
-              logger.debug('Entity  after prepare: ', JSON.stringify(o));
+              logger.debug('[UserBO] Entity  after prepare: ', JSON.stringify(o));
 
               return userDAO.save(o);
             } else {
@@ -113,7 +127,7 @@ module.exports = function(dependencies) {
       var self = this;
 
       return new Promise(function(resolve, reject) {
-        logger.info('Updating a user ', JSON.stringify(entity));
+        logger.info('[UserBO] Updating a user ', JSON.stringify(entity));
 
         var o = modelParser.prepare(entity, false);
         self.getByEmail(entity.email)
@@ -205,7 +219,7 @@ module.exports = function(dependencies) {
         self.getAll(filter, allFields)
           .then(function(users) {
             if (users.length) {
-              logger.info('User found by email', JSON.stringify(users[0]));
+              logger.info('[UserBO] User found by email', JSON.stringify(users[0]));
               return users[0];
             } else {
               return null;
@@ -233,19 +247,21 @@ module.exports = function(dependencies) {
           })
           .then(function() {
             if (user) {
+              logger.info('[UserBO] The user was found. Generating a new token for him');
               user = modelParser.clearUser(user);
               user.token = jwtHelper.createToken(user);
+              logger.debug('[UserBO] Generated token', user.token);
+
               return user;
             } else {
+              logger.warn('[UserBO] The user was not found by email and password', email);
               throw {
                 status: 404,
                 message: 'User not found'
               };
             }
           })
-          .then(function(user) {
-            resolve(modelParser.clearUser(user));
-          })
+          .then(resolve)
           .catch(reject);
       });
     },
@@ -328,11 +344,11 @@ module.exports = function(dependencies) {
       var self = this;
 
       return new Promise(function(resolve, reject) {
-        logger.info('Updating a new token for the user ', JSON.stringify(user));
+        logger.info('[UserBO] Updating a new token for the user ', JSON.stringify(user));
 
         self.getByEmail(user.email)
           .then(function(user) {
-            logger.info('An user was found by email, so a new token will be generated');
+            logger.info('[UserBO] An user was found by email, so a new token will be generated');
             if (user) {
               user.token = jwtHelper.createToken(user);
               logger.info('New token ', JSON.stringify(user));

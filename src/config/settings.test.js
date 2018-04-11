@@ -1,3 +1,4 @@
 module.exports = {
-    mongoUrl : 'mongodb://localhost/boilerplate-nodejs-api-test',
+    mongoUrl : 'mongodb://localhost/boilerplace-services-test',
+    servicePort : 4003,
 };

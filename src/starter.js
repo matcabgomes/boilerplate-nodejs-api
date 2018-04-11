@@ -19,31 +19,35 @@ module.exports = function() {
 
   return {
     createMailTemplates: function() {
-      var mailtemplateBO = new MailTemplateBO({
-        mailTemplateDAO: DAOFactory.getDAO('mailTemplate'),
-        modelParser: new ModelParser()
-      });
+      if (process.env.NODE_ENV && process.env.NODE_ENV === 'test') {
+        return Promise.resolve();
+      } else {
+        var mailtemplateBO = new MailTemplateBO({
+          mailTemplateDAO: DAOFactory.getDAO('mailTemplate'),
+          modelParser: new ModelParser()
+        });
 
-      var newUserMailTemplate = {
-        key: 'new-user',
-        from: 'boilerplate NodeJs Apit <admin@boilerplatenodejs.com>',
-        subject: 'New User',
-        textTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key}',
-        htmlTemplate: 'Hello <b>${user.name}</b>,\n\n ${user.id} ${user.email} ${user.confirmation.key}'
-      };
+        var newUserMailTemplate = {
+          key: 'new-user',
+          from: 'CryptoNote WWL <gleisson.assis@gdxconsulting.com.br>',
+          subject: 'New User',
+          textTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key}',
+          htmlTemplate: 'Hello <b>${user.name}</b>,\n\n ${user.id} ${user.email} ${user.confirmation.key}'
+        };
 
-      var resetPasswordMailTemplate = {
-        key: 'reset-password',
-        from: 'boilerplate NodeJs Apit <admin@boilerplatenodejs.com>',
-        subject: 'New User',
-        textTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key} ${user.internalKey}',
-        htmlTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key} ${user.internalKey}'
-      };
+        var resetPasswordMailTemplate = {
+          key: 'reset-password',
+          from: 'CryptoNote WWL <gleisson.assis@gdxconsulting.com.br>',
+          subject: 'New User',
+          textTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key} ${user.internalKey}',
+          htmlTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key} ${user.internalKey}'
+        };
 
-      var p = [mailtemplateBO.save(newUserMailTemplate),
-              mailtemplateBO.save(resetPasswordMailTemplate)];
+        var p = [mailtemplateBO.save(newUserMailTemplate),
+                mailtemplateBO.save(resetPasswordMailTemplate)];
 
-      return Promise.all(p);
+        return Promise.all(p);
+      }
     },
 
     createAdminUser: function() {
@@ -54,11 +58,12 @@ module.exports = function() {
         } else {
           userBO.createUserWithoutValidations({
             name: 'Administrator',
-            email: 'admin@domain.com',
+            email: 'admin@cryptonotewwl.com',
             password: '123456',
             role: 'admin',
             confirmation: {
-              key: md5('.')
+              key: md5('.'),
+              isConfirmed: false
             },
             internalKey: md5('.')
           })

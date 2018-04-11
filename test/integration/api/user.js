@@ -1,14 +1,11 @@
 var request               = require('supertest');
 var chai                  = require('chai');
 var expect                = chai.expect;
-var UserBO                = require('../../../src/business/userBO');
-var DAOFactory            = require('../../../src/daos/daoFactory');
+var BOFactory             = require('../../../src/business/boFactory');
 
 describe('api', function(){
   var server;
-  var bo = new UserBO({
-    userDAO: DAOFactory.getDAO('user')
-  });
+  var bo = BOFactory.getBO('user');
 
   before(function(){
     server = require('../../../src/server');
@@ -307,7 +304,10 @@ describe('api', function(){
             .get('/v1/users')
             .set('Accept', 'application/json')
             .set('Authorization', 'Bearer ' + token)
-            .expect(404);
+            .expect(200);
+        })
+        .then(function(res) {
+          expect(res.body.length).to.be.equal(0);
         });
     });
   });

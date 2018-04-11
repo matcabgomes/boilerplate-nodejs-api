@@ -7,7 +7,7 @@ var settingsByEnv = {};
 
 var env = (process.env.NODE_ENV || 'dev').toLowerCase();
 
-logger.info('BOILER PLATE is running on ' + env);
+logger.info('boilerplate is running on ' + env);
 
 try {
   logger.info('Trying to read the common settings file');
@@ -61,6 +61,6 @@ var defaultConfig = merge(commonSettings, privateSettings);
 // now merging default config with specifc enviroment config
 defaultConfig = merge(defaultConfig, envinromentConfig);
 
-logger.debug('BOILER PLATE is running using this configurations ', defaultConfig);
+logger.debug('boilerplate is running using this configurations ', defaultConfig);
 
 module.exports = defaultConfig;

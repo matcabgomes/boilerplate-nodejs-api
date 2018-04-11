@@ -1,40 +1,11 @@
-var UserBO                = require('../../business/userBO');
-var MailTemplateBO        = require('../../business/mailTemplateBO');
-var NotificationBO        = require('../../business/notificationBO');
-var DAOFactory            = require('../../daos/daoFactory');
-var HTTPResponseHelper    = require('../../helpers/httpResponseHelper');
-var ModelParser           = require('../../models/modelParser');
-var JWTHelper             = require('../../helpers/jwtHelper');
+var BOFactory             = require('../../business/boFactory');
 var UserHelper            = require('../../helpers/userHelper');
-var DynamicTextHelper     = require('../../helpers/dynamicTextHelper');
-var StringReplacerHelper  = require('../../helpers/stringReplacerHelper');
-var SendMailHelper        = require('../../helpers/sendMailHelper');
-var nodemailer            = require('nodemailer');
+var HTTPResponseHelper    = require('../../helpers/httpResponseHelper');
 
 module.exports = function() {
-  var modelParser = new ModelParser();
   var userHelper = new UserHelper();
-
-  var business = new UserBO({
-    userDAO: DAOFactory.getDAO('user'),
-    jwtHelper: new JWTHelper(),
-    modelParser: modelParser,
-    notificationBO: new NotificationBO({})
-  });
-
-  business.dependencies.notificationBO.setDependencies({
-    mailTemplateBO: new MailTemplateBO({
-      mailTemplateDAO: DAOFactory.getDAO('mailTemplate'),
-      modelParser: modelParser,
-    }),
-    dynamicTextHelper: new DynamicTextHelper({
-      stringReplacerHelper: new StringReplacerHelper()
-    }),
-    userBO: business,
-    sendMailHelper: new SendMailHelper(nodemailer),
-  });
-
-  var notificationBO = business.dependencies.notificationBO;
+  var business = BOFactory.getBO('user');
+  var notificationBO = BOFactory.getBO('notification');
 
   return {
     getAll: function(req, res) {
@@ -59,7 +30,7 @@ module.exports = function() {
           });
         })
         .then(function(r) {
-          rh.created(modelParser.clearUser(r));
+          rh.created(r);
         })
         .catch(rh.error);
     },

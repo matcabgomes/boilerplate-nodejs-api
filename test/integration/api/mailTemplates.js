@@ -1,24 +1,12 @@
 var request               = require('supertest');
 var chai                  = require('chai');
 var expect                = chai.expect;
-var UserBO                = require('../../../src/business/userBO');
-var MailTemplateBO        = require('../../../src/business/mailTemplateBO');
-var DAOFactory            = require('../../../src/daos/daoFactory');
-var ModelParser           = require('../../../src/models/modelParser');
-var JWTHelper             = require('../../../src/helpers/jwtHelper');
+var BOFactory             = require('../../../src/business/boFactory');
 
 describe('api', function(){
-  var server;
-  var userBO = new UserBO({
-    userDAO: DAOFactory.getDAO('user'),
-    modelParser: new ModelParser(),
-    jwtHelper: new JWTHelper()
-  });
-
-  var mailTemplateBO = new MailTemplateBO({
-    mailTemplateDAO: DAOFactory.getDAO('mailTemplate'),
-    modelParser: new ModelParser(),
-  });
+  var server = null;
+  var userBO = BOFactory.getBO('user');
+  var mailTemplateBO = BOFactory.getBO('mailTemplate');
 
   var adminUser = {
     name: 'Admin User',
@@ -131,7 +119,7 @@ describe('api', function(){
         .set('Accept', 'application/json')
         .set('Authorization', 'Bearer ' + adminUser.token)
         .expect('Content-Type', /json/)
-        .expect(404);
+        .expect(200);
     });
 
     it('should store a new mail template', function() {

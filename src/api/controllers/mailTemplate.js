@@ -1,13 +1,8 @@
-var MailTemplateBO        = require('../../business/mailTemplateBO');
-var DAOFactory            = require('../../daos/daoFactory');
+var BOFactory             = require('../../business/boFactory');
 var HTTPResponseHelper    = require('../../helpers/httpResponseHelper');
-var ModelParser           = require('../../models/modelParser');
 
 module.exports = function() {
-  var business = new MailTemplateBO({
-    mailTemplateDAO: DAOFactory.getDAO('mailTemplate'),
-    modelParser: new ModelParser()
-  });
+  var business = BOFactory.getBO('mailTemplate');
 
   return {
     getAll: function(req, res) {
