@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "node src/server.js",
-    "dev": "NODE_ENV=dev node src/server.js",
-    "test": "NODE_ENV=test istanbul cover --reporter=html ./node_modules/mocha/bin/_mocha -- -R spec --recursive"
+    "dev": "cross-env NODE_ENV=dev node src/server.js",
+    "test": "cross-env NODE_ENV=test istanbul cover --reporter=html ./node_modules/mocha/bin/_mocha -- -R spec --recursive"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "cross-env": "^5.1.4",
     "deepmerge": "^2.0.1",
     "express": "^4.15.5",
     "express-load": "^1.1.16",
@@ -42,7 +43,9 @@
     "morgan": "^1.8.2",
     "nodemailer": "^4.4.2",
     "promise": "^8.0.1",
+    "qrcode": "^1.2.0",
     "request": "^2.83.0",
+    "speakeasy": "^2.0.0",
     "supertest": "^3.0.0",
     "winston": "^2.3.1"
   },

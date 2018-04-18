@@ -1,5 +1,6 @@
 var MailTemplateBO        = require('./mailTemplateBO');
 var UserBO                = require('./userBO');
+var AlertBO               = require('./alertBO');
 var NotificationBO        = require('./notificationBO');
 var DAOFactory            = require('../daos/daoFactory');
 var ModelParser           = require('../models/modelParser');
@@ -7,6 +8,12 @@ var HelperFactory         = require('../helpers/helperFactory');
 
 function factory(dao) {
   switch (dao) {
+    case 'alert':
+      return new AlertBO({
+        alertDAO: DAOFactory.getDAO('alert'),
+        modelParser: new ModelParser(),
+        dateHelper: HelperFactory.getHelper('date')
+      });
     case 'mailTemplate':
       return new MailTemplateBO({
         mailTemplateDAO: DAOFactory.getDAO('mailTemplate'),
@@ -35,7 +42,8 @@ function factory(dao) {
         jwtHelper: HelperFactory.getHelper('jwt'),
         modelParser: new ModelParser(),
         notificationBO: factory('notification'),
-        addressBO: factory('address')
+        addressBO: factory('address'),
+        alertBO: factory('alert')
       });
     default:
       return null;
