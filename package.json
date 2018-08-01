@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate-nodejs-api",
+  "name": "ristorante-menu",
   "version": "1.0.0",
-  "description": "A simple boilerplate for NodeJs+Express+JWT",
+  "description": "A simple restaurant menu service",
   "main": "src/server.js",
   "directories": {
     "test": "test"
@@ -13,41 +13,41 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gleissonassis/boilerplace-nodejs-api.git"
+    "url": "git+https://github.com/matcabgomes/ristorante-menu.git"
   },
-  "author": "Gleisson de Assis <gleisson.assis@gmail.com>",
+  "author": "Matheus Gomes <matcabgomes@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gleissonassis/boilerplace-nodejs-api/issues"
+    "url": "https://github.com/matcabgomes/ristorante-menu.git/issues"
   },
-  "homepage": "https://github.com/gleissonassis/boilerplace-nodejs-api#readme",
+  "homepage": "https://github.com/matcabgomes/ristorante-menu.git#readme",
   "devDependencies": {
-    "eslint": "^4.6.1",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.5.3",
-    "sinon": "^3.3.0",
-    "chai": "^4.1.2"
+    "eslint": "4.6.1",
+    "istanbul": "0.4.5",
+    "mocha": "3.5.3",
+    "sinon": "3.3.0",
+    "chai": "4.1.2"
   },
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "cors": "^2.8.4",
-    "cross-env": "^5.1.4",
-    "deepmerge": "^2.0.1",
-    "express": "^4.15.5",
-    "express-load": "^1.1.16",
-    "jsonwebtoken": "^8.1.0",
-    "method-override": "^2.3.9",
-    "mongo-dot-notation": "^1.2.0",
-    "mongodb": "^2.2.31",
-    "mongoose": "^4.11.13",
-    "morgan": "^1.8.2",
-    "nodemailer": "^4.4.2",
-    "promise": "^8.0.1",
-    "qrcode": "^1.2.0",
-    "request": "^2.83.0",
-    "speakeasy": "^2.0.0",
-    "supertest": "^3.0.0",
-    "winston": "^2.3.1"
+    "body-parser": "1.18.2",
+    "cors": "2.8.4",
+    "cross-env": "5.1.4",
+    "deepmerge": "2.0.1",
+    "express": "4.15.5",
+    "express-load": "1.1.16",
+    "jsonwebtoken": "8.1.0",
+    "method-override": "2.3.9",
+    "mongo-dot-notation": "1.2.0",
+    "mongodb": "2.2.31",
+    "mongoose": "4.11.13",
+    "morgan": "1.8.2",
+    "nodemailer": "4.4.2",
+    "promise": "8.0.1",
+    "qrcode": "1.2.0",
+    "request": "2.83.0",
+    "speakeasy": "2.0.0",
+    "supertest": "3.0.0",
+    "winston": "2.3.1"
   },
   "keywords": []
 }

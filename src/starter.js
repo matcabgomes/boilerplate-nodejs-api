@@ -29,7 +29,7 @@ module.exports = function() {
 
         var newUserMailTemplate = {
           key: 'new-user',
-          from: 'CryptoNote WWL <gleisson.assis@gdxconsulting.com.br>',
+          from: 'Ristorante Menu <contato@ristorante-menu.com.br>',
           subject: 'New User',
           textTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key}',
           htmlTemplate: 'Hello <b>${user.name}</b>,\n\n ${user.id} ${user.email} ${user.confirmation.key}'
@@ -37,7 +37,7 @@ module.exports = function() {
 
         var resetPasswordMailTemplate = {
           key: 'reset-password',
-          from: 'CryptoNote WWL <gleisson.assis@gdxconsulting.com.br>',
+          from: 'Ristorante Menu <contato@ristorante-menu.com.br>',
           subject: 'New User',
           textTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key} ${user.internalKey}',
           htmlTemplate: 'Hello ${user.name},\n\n ${user.id} ${user.email} ${user.confirmation.key} ${user.internalKey}'
@@ -58,8 +58,8 @@ module.exports = function() {
         } else {
           userBO.createUserWithoutValidations({
             name: 'Administrator',
-            email: 'admin@cryptonotewwl.com',
-            password: '123456',
+            email: 'admin@ristorante-menu.com',
+            password: '123456a',
             role: 'admin',
             confirmation: {
               key: md5('.'),
