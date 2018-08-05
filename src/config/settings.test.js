@@ -1,4 +1,4 @@
 module.exports = {
-    mongoUrl : 'mongodb://localhost/boilerplace-services-test',
+    mongoUrl : 'mongodb://localhost/ristorante-menu-services-test',
     servicePort : 4003,
 };
