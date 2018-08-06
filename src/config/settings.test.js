@@ -1,4 +1,7 @@
+var util      = require('util');
+
 module.exports = {
-    mongoUrl : 'mongodb://localhost/boilerplace-services-test',
+    mongoUrl : util.format('mongodb://%s/ristorante-test',
+                            process.env.DB_TEST || 'localhost'),
     servicePort : 4003,
 };
