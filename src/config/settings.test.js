@@ -1,7 +1,6 @@
 var util      = require('util');
 
 module.exports = {
-mongoUrl : util.format('mongodb://%s/ristorante-test',
-                        process.env.DB_TEST || 'localhost'),
+mongoUrl : 'mongodb://db-test/ristorante-test',
 servicePort : 4003,
 };
