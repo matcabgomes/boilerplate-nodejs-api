@@ -6,6 +6,7 @@ var DAOFactory            = require('../daos/daoFactory');
 var ModelParser           = require('../models/modelParser');
 var HelperFactory         = require('../helpers/helperFactory');
 var PlateBO               = require('./plateBO');
+var OrderBO               = require('./orderBO');
 
 function factory(dao) {
   switch (dao) {
@@ -50,6 +51,11 @@ function factory(dao) {
         notificationBO: factory('notification'),
         addressBO: factory('address'),
         alertBO: factory('alert')
+      });
+    case 'order':
+      return new OrderBO({
+        plateDAO: DAOFactory.getDAO('order'),
+        modelParser: new ModelParser()
       });
     default:
       return null;

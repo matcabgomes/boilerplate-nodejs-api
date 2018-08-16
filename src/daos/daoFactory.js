@@ -2,6 +2,7 @@ var UserDAO             = require('./userDAO');
 var MailTemplateDAO     = require('./mailTemplateDAO');
 var AlertDAO            = require('./alertDAO');
 var PlateDAO            = require('./plateDAO');
+var OrderDAO            = require('./orderDAO');
 
 module.exports = {
   getDAO: function(dao) {
@@ -14,6 +15,8 @@ module.exports = {
         return new MailTemplateDAO();
       case 'plate':
         return new PlateDAO();
+      case 'order':
+        return new OrderDAO();
       default:
         return null;
     }
