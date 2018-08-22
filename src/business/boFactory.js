@@ -54,7 +54,7 @@ function factory(dao) {
       });
     case 'order':
       return new OrderBO({
-        plateDAO: DAOFactory.getDAO('order'),
+        orderDAO: DAOFactory.getDAO('order'),
         modelParser: new ModelParser()
       });
     default:

@@ -68,7 +68,7 @@ module.exports = function() {
         model.findByIdAndUpdate(entity._id, $.flatten(entity), {'new': true})
         .then(function(item) {
           logger.log('info', 'The order has been updated succesfully');
-          logger.debug(JSON.stringify(item.toOb/ject()));
+          logger.debug(JSON.stringify(item.toObject()));
           resolve(item.toObject());
         }).catch(function(error) {
           logger.error('An error has ocurred while updating a order', error);

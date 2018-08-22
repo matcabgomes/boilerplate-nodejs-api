@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 var mongooseSchema =  mongoose.Schema;
+var ObjectId = mongooseSchema.ObjectId;
 
 var model = null;
 
 module.exports = function(){
+  var plate = require('./plate');
   var schema = mongooseSchema({
-    //id usuario
-    //id mesa
-    //vetor de pratos
+
     userId: {
       type: String,
       required: true
@@ -16,21 +16,17 @@ module.exports = function(){
       type: String,
       required: true
     },
-    textTemplate: {
-      type: String,
-      required: true
-    },
-    from: {
-      type: String,
-      required: true
-    },
-    subject: {
-      type: String,
-      required: true
-    },
+    plates:[
+      {
+      plate:{
+        type: ObjectId,
+        ref: 'plate'
+      }
+    }
+    ],
     isEnabled: {
       type: Boolean,
-      required: true
+      required: false
     },
   });
 

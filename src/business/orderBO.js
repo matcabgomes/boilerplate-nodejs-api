@@ -30,7 +30,7 @@ module.exports = function(dependencies) {
       var self = this;
 
       return new Promise(function(resolve, reject) {
-        self.getByKey(entity.key)
+        self.getByTable(entity.tableId)
           .then(function(order) {
             if (!order) {
               logger.debug('Saving the order. Entity: ', JSON.stringify(entity));
@@ -40,7 +40,7 @@ module.exports = function(dependencies) {
             } else {
               throw {
                 status: 409,
-                message: 'The key ' + entity.key + ' is already in use by other order'
+                message: 'The tableId ' + entity.tableId + ' is already in use by other order'
               };
             }
           })
@@ -56,14 +56,14 @@ module.exports = function(dependencies) {
 
       return new Promise(function(resolve, reject) {
         var o = modelParser.prepare(entity, false);
-        self.getByKey(entity.key)
+        self.getByTable(entity.tableId)
           .then(function(order) {
             if (!order || (order && order.id === entity.id)) {
               return orderDAO.update(o);
             } else {
               throw {
                 status: 409,
-                message: 'The key ' + entity.key + ' is already in use by other order'
+                message: 'The tableId ' + entity.tableId + ' is already in use by other order'
               };
             }
           })
@@ -92,18 +92,18 @@ module.exports = function(dependencies) {
       });
     },
 
-    getByKey: function(key) {
+    getByTable: function(tableId) {
       var self = this;
 
       return new Promise(function(resolve, reject) {
         var filter = {
-          key: key
+          tableId: tableId
         };
 
         self.getAll(filter)
           .then(function(orders) {
             if (orders.length) {
-              logger.info('order found by key', JSON.stringify(orders[0]));
+              logger.info('order found by tableId', JSON.stringify(orders[0]));
               return orders[0];
             } else {
               return null;
