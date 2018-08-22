@@ -30,7 +30,7 @@ module.exports = function(dependencies) {
       var self = this;
 
       return new Promise(function(resolve, reject) {
-        self.getByKey(entity.key)
+        self.getByName(entity.name)
           .then(function(plate) {
             if (!plate) {
               logger.debug('Saving the plate. Entity: ', JSON.stringify(entity));
@@ -40,7 +40,7 @@ module.exports = function(dependencies) {
             } else {
               throw {
                 status: 409,
-                message: 'The key ' + entity.key + ' is already in use by other plate'
+                message: 'The name ' + entity.name + ' is already in use by other plate'
               };
             }
           })
@@ -56,14 +56,14 @@ module.exports = function(dependencies) {
 
       return new Promise(function(resolve, reject) {
         var o = modelParser.prepare(entity, false);
-        self.getByKey(entity.key)
+        self.getByName(entity.name)
           .then(function(plate) {
             if (!plate || (plate && plate.id === entity.id)) {
               return plateDAO.update(o);
             } else {
               throw {
                 status: 409,
-                message: 'The key ' + entity.key + ' is already in use by other plate'
+                message: 'The name ' + entity.name + ' is already in use by other plate'
               };
             }
           })
@@ -92,18 +92,18 @@ module.exports = function(dependencies) {
       });
     },
 
-    getByKey: function(key) {
+    getByName: function(name) {
       var self = this;
 
       return new Promise(function(resolve, reject) {
         var filter = {
-          key: key
+          name: name
         };
 
         self.getAll(filter)
           .then(function(plates) {
             if (plates.length) {
-              logger.info('plate found by key', JSON.stringify(plates[0]));
+              logger.info('plate found by name', JSON.stringify(plates[0]));
               return plates[0];
             } else {
               return null;
