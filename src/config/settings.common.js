@@ -9,14 +9,5 @@ module.exports = {
     jwt: {
       secret: 'secret',
       expiresIn: '1h'
-    },
-    mailOptions: {
-      host: 'host',
-      port: 465,
-      secure: true,
-      auth: {
-          user: 'user',
-          pass: 'pass'
-      }
     }
 };
