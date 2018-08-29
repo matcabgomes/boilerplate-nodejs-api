@@ -1,5 +1,5 @@
 var logger              = require('winston');
-var model               = require('../models/plate')();
+var model               = require('../models/item')();
 var Promise             = require('promise');
 var $                   = require('mongo-dot-notation');
 
@@ -14,10 +14,10 @@ module.exports = function() {
       return new Promise(function(resolve, reject) {
         model.remove({}, function(err) {
           if (err) {
-            logger.log('error', 'An error has occurred while deleting all plates', error);
+            logger.log('error', 'An error has occurred while deleting all items', error);
             reject(err);
           } else {
-            logger.log('info', 'The plates have been deleted succesfully');
+            logger.log('info', 'The items have been deleted succesfully');
             resolve();
           }
         });
@@ -26,16 +26,16 @@ module.exports = function() {
 
     getAll: function(filter) {
       return new Promise(function(resolve, reject) {
-        logger.info('Getting plates from database', filter);
+        logger.info('Getting items from database', filter);
 
         model.find(filter, projectionCommonFields)
           .lean()
           .exec()
           .then(function(items) {
-            logger.info('%d plates were returned', items.length);
+            logger.info('%d items were returned', items.length);
             resolve(items);
           }).catch(function(erro) {
-            logger.log('error', 'An error has ocurred while plates from database', erro);
+            logger.log('error', 'An error has ocurred while items from database', erro);
             reject(erro);
           });
       });
@@ -44,16 +44,16 @@ module.exports = function() {
     save: function(entity) {
       var self = this;
       return new Promise(function(resolve, reject) {
-        logger.log('info', 'Creating a new plate', JSON.stringify(entity));
+        logger.log('info', 'Creating a new item', JSON.stringify(entity));
         entity.createdAt = new Date();
         model.create(entity)
         .then(function(item) {
-          logger.log('info', 'The plate has been created succesfully', JSON.stringify(item));
+          logger.log('info', 'The item has been created succesfully', JSON.stringify(item));
           return self.getById(item._id);
         })
         .then(resolve)
         .catch(function(error) {
-          logger.error('An error has ocurred while saving a new plate', error);
+          logger.error('An error has ocurred while saving a new item', error);
           reject({
             status: 422,
             message: error.message
@@ -64,15 +64,15 @@ module.exports = function() {
 
     update: function(entity) {
       return new Promise(function(resolve, reject) {
-        logger.log('info', 'Update a plate');
+        logger.log('info', 'Update a item');
 
         model.findByIdAndUpdate(entity._id, $.flatten(entity), {'new': true})
         .then(function(item) {
-          logger.log('info', 'The plate has been updated succesfully');
+          logger.log('info', 'The item has been updated succesfully');
           logger.debug(JSON.stringify(item.toObject()));
           resolve(item.toObject());
         }).catch(function(error) {
-          logger.error('An error has ocurred while updating a plate', error);
+          logger.error('An error has ocurred while updating a item', error);
           reject({
             status: 422,
             message: error
@@ -84,20 +84,20 @@ module.exports = function() {
     getById: function(id) {
       var self = this;
       return new Promise(function(resolve, reject) {
-        logger.log('info', 'Getting a plate by id %s', id);
+        logger.log('info', 'Getting a item by id %s', id);
 
         self.getAll({_id: id, isEnabled: true})
-        .then(function(plates) {
-          if (plates.length === 0) {
-            logger.info('plate not found');
+        .then(function(items) {
+          if (items.length === 0) {
+            logger.info('item not found');
             resolve(null);
           } else {
-            logger.info('The plate was found');
-            logger.debug(JSON.stringify(plates[0]));
-            resolve(plates[0]);
+            logger.info('The item was found');
+            logger.debug(JSON.stringify(items[0]));
+            resolve(items[0]);
           }
         }).catch(function(erro) {
-            logger.log('error', 'An error has occurred while getting a plate by id %s', id, erro);
+            logger.log('error', 'An error has occurred while getting a item by id %s', id, erro);
             reject(erro);
         });
       });
@@ -105,14 +105,14 @@ module.exports = function() {
 
     disable: function(id) {
       return new Promise(function(resolve, reject) {
-        logger.log('info', 'Disabling a plate');
+        logger.log('info', 'Disabling a item');
 
         model.findByIdAndUpdate(id, {_id:id, isEnabled: false}, {'new': true, fields: projectionCommonFields})
         .then(function(item) {
-          logger.log('info', 'The plate has been disabled succesfully');
+          logger.log('info', 'The item has been disabled succesfully');
           resolve(item.toObject());
         }).catch(function(error) {
-          logger.error('An error has ocurred while disabling a plate', error);
+          logger.error('An error has ocurred while disabling a item', error);
           reject({
             status: 422,
             message: error

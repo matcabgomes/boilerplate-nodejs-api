@@ -5,7 +5,7 @@ var ObjectId = mongooseSchema.ObjectId;
 var model = null;
 
 module.exports = function(){
-  var plate = require('./plate');
+  var item = require('./item');
   var schema = mongooseSchema({
 
     userId: {
@@ -16,11 +16,11 @@ module.exports = function(){
       type: String,
       required: true
     },
-    plates:[
+    items:[
       {
-      plate:{
+      item:{
         type: ObjectId,
-        ref: 'plate'
+        ref: 'item'
       }
     }
     ],

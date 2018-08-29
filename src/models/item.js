@@ -36,7 +36,7 @@ module.exports = function(){
     }
   });
 
-  model = model ? model : mongoose.model('plates', schema);
+  model = model ? model : mongoose.model('items', schema);
 
   return model;
 };

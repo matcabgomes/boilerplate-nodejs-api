@@ -5,7 +5,7 @@ var NotificationBO        = require('./notificationBO');
 var DAOFactory            = require('../daos/daoFactory');
 var ModelParser           = require('../models/modelParser');
 var HelperFactory         = require('../helpers/helperFactory');
-var PlateBO               = require('./plateBO');
+var ItemBO               = require('./itemBO');
 var OrderBO               = require('./orderBO');
 
 function factory(dao) {
@@ -21,9 +21,9 @@ function factory(dao) {
         mailTemplateDAO: DAOFactory.getDAO('mailTemplate'),
         modelParser: new ModelParser()
       });
-    case 'plate':
-      return new PlateBO({
-        plateDAO: DAOFactory.getDAO('plate'),
+    case 'item':
+      return new ItemBO({
+        itemDAO: DAOFactory.getDAO('item'),
         modelParser: new ModelParser()
       });
     case 'notification':

@@ -2,21 +2,21 @@ var Promise         = require('promise');
 var logger          = require('../config/logger');
 
 module.exports = function(dependencies) {
-  var plateDAO = dependencies.plateDAO;
+  var itemDAO = dependencies.itemDAO;
   var modelParser = dependencies.modelParser;
 
   return {
     dependencies: dependencies,
 
     clear: function() {
-      return plateDAO.clear();
+      return itemDAO.clear();
     },
 
     getAll: function(filter) {
       return new Promise(function(resolve, reject) {
         filter.isEnabled = true;
-        logger.info('Listing all plates by filter ', filter);
-        plateDAO.getAll(filter)
+        logger.info('Listing all items by filter ', filter);
+        itemDAO.getAll(filter)
           .then(function(r) {
             resolve(r.map(function(item) {
               return modelParser.clear(item);
@@ -31,16 +31,16 @@ module.exports = function(dependencies) {
 
       return new Promise(function(resolve, reject) {
         self.getByName(entity.name)
-          .then(function(plate) {
-            if (!plate) {
-              logger.debug('Saving the plate. Entity: ', JSON.stringify(entity));
+          .then(function(item) {
+            if (!item) {
+              logger.debug('Saving the item. Entity: ', JSON.stringify(entity));
               var o = modelParser.prepare(entity, true);
               logger.debug('Entity  after prepare: ', JSON.stringify(o));
-              return plateDAO.save(o);
+              return itemDAO.save(o);
             } else {
               throw {
                 status: 409,
-                message: 'The name ' + entity.name + ' is already in use by other plate'
+                message: 'The name ' + entity.name + ' is already in use by other item'
               };
             }
           })
@@ -57,13 +57,13 @@ module.exports = function(dependencies) {
       return new Promise(function(resolve, reject) {
         var o = modelParser.prepare(entity, false);
         self.getByName(entity.name)
-          .then(function(plate) {
-            if (!plate || (plate && plate.id === entity.id)) {
-              return plateDAO.update(o);
+          .then(function(item) {
+            if (!item || (item && item.id === entity.id)) {
+              return itemDAO.update(o);
             } else {
               throw {
                 status: 409,
-                message: 'The name ' + entity.name + ' is already in use by other plate'
+                message: 'The name ' + entity.name + ' is already in use by other item'
               };
             }
           })
@@ -76,14 +76,14 @@ module.exports = function(dependencies) {
 
     getById: function(id) {
       return new Promise(function(resolve, reject) {
-        plateDAO.getById(id)
-          .then(function(plate) {
-            if (plate) {
-              return modelParser.clear(plate);
+        itemDAO.getById(id)
+          .then(function(item) {
+            if (item) {
+              return modelParser.clear(item);
             } else {
               throw {
                 status: 404,
-                message: 'Template not found'
+                message: 'Item not found'
               };
             }
           })
@@ -101,10 +101,10 @@ module.exports = function(dependencies) {
         };
 
         self.getAll(filter)
-          .then(function(plates) {
-            if (plates.length) {
-              logger.info('plate found by name', JSON.stringify(plates[0]));
-              return plates[0];
+          .then(function(items) {
+            if (items.length) {
+              logger.info('item found by name', JSON.stringify(items[0]));
+              return items[0];
             } else {
               return null;
             }
@@ -119,14 +119,14 @@ module.exports = function(dependencies) {
 
       return new Promise(function(resolve, reject) {
         self.getById(id)
-          .then(function(plate) {
-            if (!plate) {
+          .then(function(item) {
+            if (!item) {
               throw {
                 status: 404,
-                message: 'Template not found'
+                message: 'Item not found'
               };
             } else {
-              return plateDAO.disable(id);
+              return itemDAO.disable(id);
             }
           })
           .then(resolve)

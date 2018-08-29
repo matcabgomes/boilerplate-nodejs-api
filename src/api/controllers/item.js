@@ -2,7 +2,7 @@ var BOFactory             = require('../../business/boFactory');
 var HTTPResponseHelper    = require('../../helpers/httpResponseHelper');
 
 module.exports = function() {
-  var business = BOFactory.getBO('plate');
+  var business = BOFactory.getBO('item');
 
   return {
     getAll: function(req, res) {
